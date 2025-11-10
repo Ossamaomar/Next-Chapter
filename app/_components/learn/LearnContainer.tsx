@@ -23,7 +23,7 @@ import {
 import { useEffect, useRef, useState, useTransition } from "react";
 // import { getAppState } from "@/store/appSlice";
 import { findFirstNotCompletedLecture, sortLectures } from "@/app/_lib/helpers";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   checkLectureProgress,
   updateEnrollmentProgress,
@@ -41,16 +41,19 @@ export default function LearnContainer({
   sections,
   lectures,
   lecturesProgress,
+  searchParams
 }: {
   course: CourseResponse;
   enrollment: Enrollment;
   sections: CourseSection[];
   lectures: CourseLecture[];
   lecturesProgress: LectureProgress[];
+  searchParams: string;
 }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const lectureIdParam = searchParams.get("lecture");
+  // const searchParams = useSearchParams();
+  // const lectureIdParam = searchParams.get("lecture");
+  const lectureIdParam = searchParams
   const dispatch = useDispatch();
   // const user = useSelector(getUserData);
   const learningMode = useSelector(getLearningModeState);

@@ -8,35 +8,31 @@ export async function GET() {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
+    // const role = cookieStore.get('role')?.value;
     const userId = cookieStore.get('userId')?.value;
 
     // If no token, return not authenticated
-    if (!token || !userId) {
+    if (!token) {
       return NextResponse.json({ 
         authenticated: false,
         user: null
       });
     }
 
-    // Get user data from database
+    
+
+    // Fallback: Get user data from database if cookies are incomplete
     const userData = await getUserById(userId);
 
-    if (!userData) {
-      return NextResponse.json({ 
-        authenticated: false,
-        user: null
-      });
-    }
-
-    console.log("user data here", userData);
+    console.log("user data here", userData)
     
     return NextResponse.json({
       authenticated: true,
       user: {
-        id: userData.id,
-        email: userData.email,
-        name: userData.name,
-        role: userData.role,
+        id: userData?.id,
+        email: userData?.email,
+        name: userData?.name,
+        role: userData?.role,
       }
     });
 
@@ -46,7 +42,7 @@ export async function GET() {
       authenticated: false,
       user: null,
       error: 'Token validation failed'
-    }, { status: 500 });
+    });
   }
 }
 

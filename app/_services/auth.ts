@@ -1,7 +1,6 @@
 import { supabase } from "@/app/_lib/supabase";
 import { InstructorInfo, userSignin, userSignup } from "./types";
 import { toast } from "sonner";
-import { createClient } from "../_lib/server";
 
 
 export async function signUp(params: userSignup) {
@@ -93,20 +92,15 @@ export async function getUserByEmail(email: string) {
   return data;
 }
 
-export async function getUserById(userId: string | undefined) {
-  if (!userId) return null;
-
-  const supabase = await createClient();
-  
+export async function getUserById(id: string) {
   const { data, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', userId)
-    .single();
-
+    .from("users")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle(); // gets one row only
   if (error) {
-    console.error('Error fetching user:', error);
-    return null;
+    console.log("Error fetching user:", error.message);
+    return null;  
   }
 
   return data;

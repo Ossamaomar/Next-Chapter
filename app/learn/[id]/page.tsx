@@ -16,10 +16,13 @@ import {
 
 export default async function page({
   params,
+  searchParams
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ lecture?: string }>
 }) {
   const { id } = await params;
+  const { lecture } = await searchParams;
   const enrollment: Enrollment = await getEnrollment(id);
   const course: CourseResponse = await getCourseById(enrollment?.courseId);
   const sections: CourseSection[] = await getCourseSections(
@@ -38,6 +41,7 @@ export default async function page({
         sections={sections}
         lectures={lectures}
         lecturesProgress={lecturesProgress}
+        searchParams={lecture}
       />
     </div>
   );

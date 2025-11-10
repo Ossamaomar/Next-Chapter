@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FiHeart } from "react-icons/fi";
@@ -63,7 +63,12 @@ export default function Navbar() {
         </Link>
 
         <div ref={wrapperRef} className="w-full relative">
-          <Searchbar setCourses={setCourses} setShowResults={setShowResults} />
+          <Suspense>
+            <Searchbar
+              setCourses={setCourses}
+              setShowResults={setShowResults}
+            />
+          </Suspense>
           {showResults && courses.length > 0 && (
             <div className="bg-gray-50 border-2 border-slate-300  mt-1 absolute w-full z-10 p-2 space-y-2">
               {courses.map((course) => (
@@ -208,7 +213,7 @@ export default function Navbar() {
             Profile
           </Link>
         )}
-        
+
         {user.role === "Instructor" && (
           <Link
             href="/addCourse"
