@@ -27,7 +27,7 @@ export default function CourseThumbnail() {
   const [isLoading, setIsLoading] = useState(false);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [showCropper, setShowCropper] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  // const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const dispatch = useDispatch();
@@ -75,7 +75,7 @@ export default function CourseThumbnail() {
     formData.append("file", file);
     formData.append("upload_preset", "personal_pictures");
 
-    setUploading(true);
+    // setUploading(true);
     setUploadProgress(0);
     setIsLoading(true);
 
@@ -101,7 +101,7 @@ export default function CourseThumbnail() {
       console.error("Upload error:", err);
       toast.error("Failed to upload thumbnail");
     } finally {
-      setUploading(false);
+      // setUploading(false);
       setUploadProgress(0);
       setIsLoading(false);
     }

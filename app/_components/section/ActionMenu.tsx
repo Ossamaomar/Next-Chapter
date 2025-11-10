@@ -1,4 +1,3 @@
-import { deleteLectureApi } from "@/app/_services/lectures";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -6,14 +5,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { deleteLecture } from "@/store/courseLecturesSlice";
-import { useState } from "react";
-
 import { HiDotsVertical } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "sonner";
-// import { EditLectureDialog } from "./EditLectureDialog";
-import { CourseLecture } from "@/app/_services/types";
 import { AppDispatch } from "@/store/store";
 import { deleteSectionThunk, getSecionSelected, getSecionsState, modifySectionOrder, removeSection, selectSection, updateSectionsOrderThunk } from "@/store/courseSectionsSlice";
 
@@ -27,7 +20,7 @@ export default function ActionMenu({
   const dispatch = useDispatch<AppDispatch>();
   const selectedSection = useSelector(getSecionSelected);
   const sections = useSelector(getSecionsState);
-  const isSelected = id === selectedSection;
+  // const isSelected = id === selectedSection;
 
   function handleDelete() {
     dispatch(removeSection({ id, order_index }));

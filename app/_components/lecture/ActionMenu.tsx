@@ -1,4 +1,3 @@
-import { deleteLectureApi } from "@/app/_services/lectures";
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -6,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { deleteLecture, deleteLectureThunk } from "@/store/courseLecturesSlice";
+import { deleteLectureThunk } from "@/store/courseLecturesSlice";
 import {  useState } from "react";
 
 import { HiDotsVertical } from "react-icons/hi";

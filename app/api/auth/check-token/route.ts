@@ -1,14 +1,14 @@
 // app/api/auth/check-token/route.ts
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 // import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import {  getUserById } from '@/app/_services/auth';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
-    const role = cookieStore.get('role')?.value;
+    // const role = cookieStore.get('role')?.value;
     const userId = cookieStore.get('userId')?.value;
 
     // If no token, return not authenticated

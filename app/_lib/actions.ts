@@ -6,10 +6,10 @@ import { CartItem, userSignin } from "../_services/types";
 import { stripe } from "./stripe";
 
 export async function loginAction({ email, password }: userSignin) {
-  const res1 = await login({ email, password });
+  await login({ email, password });
   // console.log(res1);
 
-  const res2 = await getUserByEmail(email);
+  await getUserByEmail(email);
   // console.log(res2);
 }
 

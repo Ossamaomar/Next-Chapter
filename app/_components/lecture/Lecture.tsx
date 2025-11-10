@@ -13,7 +13,7 @@ import {
   setCheckedLecture,
 } from "@/store/enrollmentsSlice";
 import { checkLectureProgress } from "@/app/_services/enrollments";
-import { getUserData } from "@/store/authSlice";
+// import { getUserData } from "@/store/authSlice";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MouseEvent } from "react";
 
@@ -38,7 +38,7 @@ export default function Lecture({
   lecture: CourseLecture;
   isTheCourseInstrutor: boolean;
 }) {
-  const { role } = useSelector(getUserData);
+  // const { role } = useSelector(getUserData);
   const router = useRouter();
   const dispatch = useDispatch();
   const duration = formatDuration(lecture.duration);
