@@ -14,7 +14,11 @@ import {
   LectureProgress,
 } from "@/app/_services/types";
 
-export default async function page({ params }: { params: { id: string } }) {
+export default async function page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const enrollment: Enrollment = await getEnrollment(id);
   const course: CourseResponse = await getCourseById(enrollment?.courseId);
@@ -25,8 +29,6 @@ export default async function page({ params }: { params: { id: string } }) {
     enrollment.courseId
   );
   const lecturesProgress: LectureProgress[] = await getLecturesProgress(id);
-  
-  
 
   return (
     <div className="px-8 py-10">
