@@ -38,7 +38,7 @@ export default function CartCheckout() {
           Proceed to checkout
         </button>
       </div>
-      <div className="md:hidden bg-slate-100 p-3 border  border-slate-300 fixed bottom-0 left-0 w-full">
+      <div className="md:hidden bg-slate-100 p-3 border  border-slate-300  w-full">
         <p className="text-gray-500 font-bold">
           Total:{" "}
           <span className="font-bold text-2xl text-black">

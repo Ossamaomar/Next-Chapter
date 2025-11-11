@@ -9,15 +9,15 @@ export default function CartItem({ cartItem }: { cartItem: CartItemType }) {
   return (
     <div className="w-full relative before:content-[''] before:block before:w-full before:h-[1px] before:bg-gray-400 before:absolute before:-top-4 mt-4">
       <div className="flex items-start gap-2">
-        <div className="relative w-30 h-18 ">
+        <div className="relative aspect-video w-30">
           <Image
-            className="object-cover"
+            
             fill
             src={cartItem.course.thumbnail_url}
             alt={`Cover of ${cartItem.course.title} course`}
           />
         </div>
-        <div className="flex justify-between w-full">
+        <div className="flex justify-between w-full gap-4">
           <div>
             <h2 className="font-semibold text-xl">{cartItem.course.title}</h2>
             <p className="font-medium text-[14px] text-gray-500">
