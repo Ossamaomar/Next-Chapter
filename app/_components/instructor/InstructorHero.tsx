@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
+import React, { useRef } from "react";
 
 import {
   FaFacebook,
@@ -10,6 +12,8 @@ import {
   FaLink,
 } from "react-icons/fa6";
 import SocialLink from "./SocialLink";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const getSocialIcon = (url: string) => {
   const lower = url.toLowerCase();
@@ -35,8 +39,25 @@ export default function InstructorHero({
   imgSrc: string;
   links: string[];
 }) {
+  const container = useRef<HTMLDivElement>(null);
+  useGSAP(() => {
+    gsap.fromTo(
+      container.current,
+      { filter: "blur(10px)", opacity: 0 },
+      {
+        filter: "blur(0px)",
+        opacity: 1,
+        duration: 1.5,
+        delay: 1,
+        ease: "power2.out",
+      }
+    );
+  });
   return (
-    <div className="w-full mt-10 lg:mt-0 lg:w-[400px] bg-white lg:absolute lg:-translate-y-1/2 lg:z-50 lg:right-8 rounded-2xl shadow-2xl py-5 flex flex-col justify-center items-center">
+    <div
+      ref={container}
+      className="w-full bl mt-10 lg:mt-0 lg:w-[400px] bg-white lg:absolute lg:-translate-y-1/2 lg:z-50 lg:right-8 rounded-2xl shadow-2xl py-5 flex flex-col justify-center items-center"
+    >
       <Image
         className="rounded-full"
         src={imgSrc}

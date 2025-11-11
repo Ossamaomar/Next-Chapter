@@ -65,7 +65,7 @@ const enrollmentsSlice = createSlice({
       action: PayloadAction<{ id: string; newProgress: number }>
     ) {
       const enr = state.enrollments.find((enr) => enr.id === action.payload.id);
-      enr.progress = action.payload.newProgress;
+      enr.progress = action.payload?.newProgress;
     },
     clearEnrollmentSlice() {
       return initialState;

@@ -1,11 +1,11 @@
 "use client";
 
-import { useRef } from "react";
-import Header from "../ui/Header";
 import { useGSAP } from "@gsap/react";
+import Header from "../ui/Header";
+import { useRef } from "react";
 import gsap from "gsap";
 
-export default function CartHeader() {
+export default function WishlistHeader() {
   const container = useRef<HTMLDivElement>(null);
   useGSAP(() => {
     gsap.from(container.current, {
@@ -17,7 +17,7 @@ export default function CartHeader() {
   });
   return (
     <div ref={container}>
-      <Header>My Cart</Header>
+      <Header>My Wishlist</Header>
     </div>
   );
 }

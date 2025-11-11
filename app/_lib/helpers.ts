@@ -35,7 +35,7 @@ export function findFirstNotCompletedLecture(lecturesProgress: LectureProgress[]
 
   // Find the first lecture that is not completed
   const firstLec = sorted.find(lecture => !lecture.isCompleted) || sorted[sorted.length - 1];
-  return lectures.find(l => l.id === firstLec.lectureId)
+  return lectures.find(l => l.id === firstLec?.lectureId)
 }
 
 export function sortLectures(lectures: CourseLecture[]) {

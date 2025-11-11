@@ -43,7 +43,7 @@ export default function CourseMeta({ course }: { course: CourseResponse }) {
     try {
       setIsLoadingDelete(true);
       const res = await deleteCourseById(id, sections, lectures);
-      console.log("res is", res)
+      console.log("res is", res);
       if (res) {
         toast.success("Course deleted successfully");
         router.push("/profile");

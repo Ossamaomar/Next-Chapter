@@ -103,15 +103,49 @@ export async function deleteCourseById(
     }
   }
 
-  const { error } = await supabase.from("courses").delete().eq("id", id);
+  const { error: cartError } = await supabase
+    .from("cartItems")
+    .delete()
+    .eq("courseId", id);
 
+  if (cartError) {
+    throw new Error(cartError.message);
+  }
+
+  const { error: wishlistError } = await supabase
+    .from("wishlistItems")
+    .delete()
+    .eq("courseId", id);
+
+  if (wishlistError) {
+    throw new Error(wishlistError.message);
+  }
+
+  const { error: enrollmentsError } = await supabase
+    .from("enrollments")
+    .delete()
+    .eq("courseId", id);
+
+  if (enrollmentsError) {
+    throw new Error(enrollmentsError.message);
+  }
+
+  const { error: progressError } = await supabase
+    .from("lectures_progress")
+    .delete()
+    .eq("courseId", id);
+
+  if (progressError) {
+    throw new Error(progressError.message);
+  }
+
+  const { error } = await supabase.from("courses").delete().eq("id", id);
   if (error) {
-    console.error(error.message);
-    return false;
-  } 
-  // else {
-  //   return true;
-  // }
+    console.log("Here error");
+    throw new Error(error.message);
+  } else {
+    return true;
+  }
 }
 
 export async function getCourseById(id: string) {
@@ -232,6 +266,7 @@ export async function addCourseRating(
   course: CourseResponse,
   newRating: number
 ) {
+  console.log("new rating", newRating);
   const newAvg =
     (course.avgRating * course.numberOfRatings + newRating) /
     (course.numberOfRatings + 1);
@@ -267,6 +302,11 @@ export async function editCourseRating(
     throw new Error(previousError.message);
   }
 
+  console.log(
+    course.avgRating * course.numberOfRatings +
+      newRating -
+      previousRating.rating
+  );
   const newAvg =
     (course.avgRating * course.numberOfRatings +
       newRating -

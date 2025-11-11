@@ -5,7 +5,7 @@ export default function page() {
   return (
     <div className="space-y-4">
       <CartHeader />
-      <div className="w-full px-8 py-6">
+      <div className="w-full py-12 px-8">
         <CartContainer />
       </div>
     </div>

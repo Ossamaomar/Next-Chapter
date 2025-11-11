@@ -34,7 +34,7 @@ export default function CourseFeedback({
 
   useEffect(() => {
     async function fetchCourse() {
-      const res = await getCourseById(enrollment?.courseId);
+      const res = await getCourseById(enrollment?.courseId ?? "");
       setCourse(res);
     }
     fetchCourse();

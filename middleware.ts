@@ -1,10 +1,13 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { getCourseById } from "./app/_services/courses";
+import { CourseResponse } from "./app/_services/types";
 
 export async function middleware(request: NextRequest) {
   const cookieStore = await cookies();
   const token = request.cookies.get("token")?.value;
   const role = cookieStore.get("role")?.value;
+  const id = cookieStore.get("userId")?.value;
   const { pathname } = request.nextUrl;
 
   // Define protected routes
@@ -16,7 +19,7 @@ export async function middleware(request: NextRequest) {
     "/checkout",
     "/learn",
     "/myLearning",
-    "/courseDetails"
+    "/courseDetails",
   ];
   const studentRoutes = ["/cart", "/wishlist", "/learn", "myLearning"];
   const authRoutes = ["/auth/login", "/auth/register"];
@@ -48,6 +51,14 @@ export async function middleware(request: NextRequest) {
 
   if (isInstructorRoute && role !== "Instructor") {
     return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  if (pathname.startsWith("/courseDetails/")) {
+    const course: CourseResponse = await getCourseById(pathname.split("/")[2]);
+    if (course.instructor_id !== id) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+    console.log(pathname.split("/")[2]);
   }
 
   return NextResponse.next();

@@ -36,7 +36,7 @@ export default function CourseOverview({ course }: { course: CourseResponse }) {
   useEffect(() => {
     async function fetchNumOfStudents() {
       try {
-        const enrollments = await getEnrollmentsForCourse(course.id);
+        const enrollments = await getEnrollmentsForCourse(course.id ?? "");
         setNumOfStudents(enrollments.length);
       } catch {}
     }

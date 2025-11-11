@@ -120,12 +120,12 @@ export default function LearnContainer({
     async function completeLec() {
       const curLecProgress = lecturesProgress.find(
         (lec) =>
-          lec.lectureId === currentLecture.id &&
-          lec.enrollmentId === enrollment.id
+          lec?.lectureId === currentLecture?.id &&
+          lec?.enrollmentId === enrollment?.id
       );
       await checkLectureProgress(
-        curLecProgress.enrollmentId,
-        curLecProgress.lectureId,
+        curLecProgress?.enrollmentId,
+        curLecProgress?.lectureId,
         true
       );
 

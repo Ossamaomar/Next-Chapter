@@ -1,14 +1,11 @@
 "use client";
 
+import { useRef } from "react";
+import WishlistRow from "./WishlistRow";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef } from "react";
 
-export default function InstructorAbout({
-  description,
-}: {
-  description: string;
-}) {
+export default function WishlistContainer() {
   const container = useRef<HTMLDivElement>(null);
   useGSAP(() => {
     gsap.fromTo(
@@ -24,9 +21,8 @@ export default function InstructorAbout({
     );
   });
   return (
-    <div ref={container} className="space-y-4">
-      <h2 className="text-2xl font-semibold">About Me</h2>
-      <p>{description}</p>
+    <div ref={container} className="w-full px-8 py-6">
+      <WishlistRow />
     </div>
   );
 }

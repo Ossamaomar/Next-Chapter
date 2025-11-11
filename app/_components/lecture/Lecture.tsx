@@ -13,7 +13,6 @@ import {
   setCheckedLecture,
 } from "@/store/enrollmentsSlice";
 import { checkLectureProgress } from "@/app/_services/enrollments";
-// import { getUserData } from "@/store/authSlice";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MouseEvent } from "react";
 
@@ -38,7 +37,7 @@ export default function Lecture({
   lecture: CourseLecture;
   isTheCourseInstrutor: boolean;
 }) {
-  // const { role } = useSelector(getUserData);
+
   const router = useRouter();
   const dispatch = useDispatch();
   const duration = formatDuration(lecture.duration);
@@ -103,8 +102,8 @@ export default function Lecture({
       <p className="flex gap-2 items-center">
         {learningMode && (
           <Checkbox
-            defaultChecked={lectureProgerss.isCompleted}
-            checked={lectureProgerss.isCompleted}
+            defaultChecked={lectureProgerss?.isCompleted}
+            checked={lectureProgerss?.isCompleted}
             onClick={onCheckLecture}
             className={`data-[state=checked]:border-emerald-600 
                         data-[state=checked]:bg-emerald-600 
