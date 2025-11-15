@@ -21,9 +21,9 @@ import { BiUser } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function UserMenu() {
+  const { name, role, email, personalPictureUrl } = useSelector(getUserData);
   const dispatch = useDispatch();
   const router = useRouter();
-  const { name, role, email, personalPictureUrl } = useSelector(getUserData);
 
   async function handleLogout() {
     await logout();
@@ -31,7 +31,6 @@ export default function UserMenu() {
     dispatch(clearWishlistSlice());
     dispatch(clearCartSlice());
     dispatch(clearEnrollmentSlice());
-    dispatch(clearWishlistSlice());
     router.push("/");
     router.refresh();
   }

@@ -9,11 +9,14 @@ import { Menu, X } from "lucide-react"; // icons for mobile menu
 import Searchbar from "./Searchbar";
 import { CourseResponse } from "@/app/_services/types";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
-import { getCartItems } from "@/store/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCartSlice, getCartItems } from "@/store/cartSlice";
 import UserCurrentState from "./UserCurrentState";
-import { getWishlistItemsState } from "@/store/wishlistSlice";
-import { getUserData } from "@/store/authSlice";
+import {
+  clearWishlistSlice,
+  getWishlistItemsState,
+} from "@/store/wishlistSlice";
+import { getUserData, logoutUser } from "@/store/authSlice";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -24,6 +27,8 @@ import {
 } from "@/components/ui/navigation-menu";
 import { categories } from "@/app/_lib/helpers";
 import { Button } from "@/components/ui/button";
+import { logout } from "@/app/_services/auth";
+import { clearEnrollmentSlice } from "@/store/enrollmentsSlice";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -34,6 +39,17 @@ export default function Navbar() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const user = useSelector(getUserData);
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  async function handleLogout() {
+    await logout();
+    dispatch(logoutUser());
+    dispatch(clearWishlistSlice());
+    dispatch(clearCartSlice());
+    dispatch(clearEnrollmentSlice());
+    router.push("/");
+    router.refresh();
+  }
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -270,16 +286,25 @@ export default function Navbar() {
         </div>
 
         <div>
-          <Link href={"/auth/login"}>
+          {user.id ? (
             <Button
-              variant={"default"}
-              size={"lg"}
-              className="transition duration-300 border-2 border-black hover:bg-white hover:text-black"
-              onClick={() => setOpen(false)}
+              className="bg-red-500/90 border-2 border-red-500 transition duration-300 hover:bg-white"
+              onClick={handleLogout}
             >
-              Login
+              Logout
             </Button>
-          </Link>
+          ) : (
+            <Link href={"/auth/login"}>
+              <Button
+                variant={"default"}
+                size={"lg"}
+                className="transition duration-300 border-2 border-black hover:bg-white hover:text-black"
+                onClick={() => setOpen(false)}
+              >
+                Login
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
