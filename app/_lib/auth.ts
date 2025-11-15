@@ -17,7 +17,7 @@ export const {
     authorized({ auth }) {
       return !!auth?.user;
     },
-    async signIn({ user, account, profile }) {
+    async signIn({ user }) {
       try {
         const existingGuest = await getUserByEmail(user.email);
 
@@ -27,7 +27,7 @@ export const {
         return false;
       }
     },
-    async session({ session, user }) {
+    async session({ session }) {
       const guest = await getUserByEmail(session.user.email);
       session.user.id = guest.id;
       return session;
