@@ -23,6 +23,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { categories } from "@/app/_lib/helpers";
+import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -51,16 +52,18 @@ export default function Navbar() {
 
   return (
     <div>
-      <nav className="h-16 md:h-20 flex gap-4 justify-between items-center shadow-md px-6   relative">
-        <Link href="/">
-          <Image
-            src="/logo.png"
-            alt="Next Chapter logo"
-            width={90}
-            height={90}
-            className="cursor-pointer"
-          />
-        </Link>
+      <nav className="h-20 flex gap-4 justify-between items-center shadow-md px-6 relative">
+        <div className="relative shrink-0">
+          <Link href="/">
+            <Image
+              src="/logo.png"
+              alt="Next Chapter logo"
+              width={80}
+              height={80}
+              className="cursor-pointer"
+            />
+          </Link>
+        </div>
 
         <div ref={wrapperRef} className="w-full relative">
           <Suspense>
@@ -223,32 +226,60 @@ export default function Navbar() {
             Add Course
           </Link>
         )}
-        
+
         {(user.role === "Instructor" || user.role === "Student") && (
           <Link
             href="/account"
             onClick={() => setOpen(false)}
             className="hover:text-emerald-600"
           >
-            Add Course
+            Account
           </Link>
         )}
 
         {/* Mobile Icons */}
         <div className="flex gap-6 mt-6">
-          <Link href="/wishlist" onClick={() => setOpen(false)}>
-            <FiHeart size={25} className="hover:text-emerald-600" />
-          </Link>
+          <div className="relative">
+            {wishlistItems.length > 0 && (
+              <div className="absolute flex justify-center items-center text-white text-sm bg-emerald-600 w-5 h-5 rounded-full -top-2 -right-2">
+                {wishlistItems.length}
+              </div>
+            )}
+            <Link
+              href="/wishlist"
+              onClick={() => setOpen(false)}
+              className=" hover:text-emerald-600  "
+            >
+              <FiHeart size={25} className="cursor-pointer " />
+            </Link>
+          </div>
           <div className="relative">
             {cartItems.length > 0 && (
               <div className="absolute flex justify-center items-center text-white text-sm bg-emerald-600 w-5 h-5 rounded-full -top-2 -right-2">
                 {cartItems.length}
               </div>
             )}
-            <Link href="/cart" className=" hover:text-emerald-600  ">
+            <Link
+              href="/cart"
+              onClick={() => setOpen(false)}
+              className=" hover:text-emerald-600  "
+            >
               <HiOutlineShoppingCart size={25} className="cursor-pointer " />
             </Link>
           </div>
+        </div>
+
+        <div>
+          <Link href={"/auth/login"}>
+            <Button
+              variant={"default"}
+              size={"lg"}
+              className="transition duration-300 border-2 border-black hover:bg-white hover:text-black"
+              onClick={() => setOpen(false)}
+            >
+              Login
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

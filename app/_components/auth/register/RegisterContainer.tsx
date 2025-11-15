@@ -76,8 +76,8 @@ export default function RegisterContainer() {
   }
 
   return (
-    <div className="flex-1 py-10 flex items-center justify-center bg-gradient-to-r from-amber-100 to-emerald-100">
-      <div className="w-[400px] flex flex-col justify-center items-center rounded-lg space-y-6 py-10 border px-8 border-gray-400 bg-white">
+    <div className="flex-1 py-10 px-8 flex items-center justify-center bg-gradient-to-r from-amber-100 to-emerald-100">
+      <div className="w-full max-w-[400px] px-4 md:px-8 py-10 rounded-lg space-y-6 border border-gray-400 bg-white">
         <GoogleSignInButton />
         <Form {...form}>
           <form

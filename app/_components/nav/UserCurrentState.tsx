@@ -9,7 +9,7 @@ export default function UserCurrentState() {
   const userData = useSelector(getUserData);
 
   return (
-    <>
+    <div className="hidden md:block">
       {userData?.email ? (
         <UserMenu />
       ) : (
@@ -23,6 +23,6 @@ export default function UserCurrentState() {
           </Button>
         </Link>
       )}
-    </>
+    </div>
   );
 }
