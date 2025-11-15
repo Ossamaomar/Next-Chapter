@@ -48,7 +48,6 @@ export async function createCourse(course: Course, user: User) {
     console.error("Add course error:", error.message);
     throw new Error(`Upload error: ${error.message}`);
   } else {
-    // console.log(data);
     return data;
   }
 }
@@ -71,7 +70,6 @@ export async function editCourseById(course: CourseEditType, id: string) {
     console.error("Add course error:", error.message);
     return false;
   } else {
-    console.log(data);
     return data;
   }
 }
@@ -141,7 +139,6 @@ export async function deleteCourseById(
 
   const { error } = await supabase.from("courses").delete().eq("id", id);
   if (error) {
-    console.log("Here error");
     throw new Error(error.message);
   } else {
     return true;
@@ -232,15 +229,12 @@ export async function updateCourseDuration(
   duration: number,
   type: "inc" | "dec"
 ) {
-  console.log("Here1");
   const { error: incError } = await supabase.rpc("update_course_duration", {
     course_id: id,
     amount: type === "inc" ? duration : -duration,
   });
 
   if (incError) {
-    console.log("Here2");
-    console.log(incError);
     throw new Error(incError.message);
   }
 }
@@ -266,12 +260,10 @@ export async function addCourseRating(
   course: CourseResponse,
   newRating: number
 ) {
-  console.log("new rating", newRating);
   const newAvg =
     (course.avgRating * course.numberOfRatings + newRating) /
     (course.numberOfRatings + 1);
 
-  console.log(newAvg);
   const { data, error } = await supabase
     .from("courses")
     .update({
@@ -302,17 +294,13 @@ export async function editCourseRating(
     throw new Error(previousError.message);
   }
 
-  console.log(
-    course.avgRating * course.numberOfRatings +
-      newRating -
-      previousRating.rating
-  );
+
   const newAvg =
     (course.avgRating * course.numberOfRatings +
       newRating -
       previousRating.rating) /
     course.numberOfRatings;
-  console.log(course.numberOfRatings);
+
   const { data, error } = await supabase
     .from("courses")
     .update({

@@ -29,7 +29,6 @@ export const deleteCartThunk = createAsyncThunk(
   "cart/deleteCart",
   async (id: string) => {
     const cart = await checkUserHasCart(id, "student");
-    console.log(cart);
     await deleteCart(cart.cart.id, cart.cartItems);
     return cart;
   }

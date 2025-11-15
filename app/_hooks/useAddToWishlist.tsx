@@ -13,7 +13,6 @@ export function useAddToWishlist() {
   const dispatch = useDispatch();
 
   async function handleAddToWishlist(courseId: string) {
-    console.log(userHasWishlist);
     if (userHasWishlist) {
       const wishlistItem = await addCourseToWishlist(
         courseId,
@@ -21,7 +20,6 @@ export function useAddToWishlist() {
         wishlistId
       );
       dispatch(addCourseToWishlistSlice(wishlistItem));
-      console.log("User has wishlist");
     } else {
       const wishlist = await createWishlist(studentId);
       dispatch(createWishlistSlice(wishlist));
@@ -31,7 +29,6 @@ export function useAddToWishlist() {
         wishlist.id
       );
       dispatch(addCourseToWishlistSlice(wishlistItem));
-      console.log("User doesn't has wishlist");
     }
   }
 

@@ -26,7 +26,7 @@ export default function Main() {
   });
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] relative md:min-h-[calc(100vh-5rem)]  px-8 py-4 flex flex-col md:flex-row justify-center items-center bg-gradient-to-r from-amber-50 to-emerald-100">
+    <div className="relative min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)]  px-8 py-4 flex flex-col md:flex-row justify-center items-center bg-gradient-to-r from-amber-50 to-emerald-100">
       <div
         ref={mainRef}
         className=" md:w-1/2 flex flex-col justify-center items-center gap-2 md:gap-5"

@@ -29,8 +29,6 @@ export function DraggableCategories({
           slidesPerView: 3,
         },
       }}
-      onSlideChange={() => console.log("slide change")}
-      onSwiper={(swiper) => console.log(swiper)}
       className=" sm:[w-300px] md:w-[600px] lg:w-[900px] h-80  mx-auto px-20! "
       freeMode={true}
       autoplay={true}

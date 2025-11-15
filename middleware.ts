@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
   const role = cookieStore.get("role")?.value;
   const id = cookieStore.get("userId")?.value;
   const { pathname } = request.nextUrl;
-
+  
   // Define protected routes
   const protectedRoutes = [
     "/profile",
@@ -20,6 +20,7 @@ export async function middleware(request: NextRequest) {
     "/learn",
     "/myLearning",
     "/courseDetails",
+    "/account"
   ];
   const studentRoutes = ["/cart", "/wishlist", "/learn", "myLearning"];
   const authRoutes = ["/auth/login", "/auth/register"];
@@ -58,7 +59,6 @@ export async function middleware(request: NextRequest) {
     if (course.instructor_id !== id) {
       return NextResponse.redirect(new URL("/", request.url));
     }
-    console.log(pathname.split("/")[2]);
   }
 
   return NextResponse.next();
@@ -79,5 +79,6 @@ export const config = {
     "/courseDetails/:path*",
     "/auth/login",
     "/auth/register",
+    "/account"
   ],
 };

@@ -98,15 +98,15 @@ export function EditLectureDialog({ lecture }: { lecture: CourseLecture }) {
       );
 
       const videoUrl = res.data.secure_url;
-      console.log("Uploaded video URL:", videoUrl);
       editLectureForm.setValue("lectureUrl", videoUrl);
     } catch (err) {
       if (axios.isCancel(err)) {
-        console.log("Upload canceled");
+        toast.info("Upload cancelled");
       } else if (err.name === "CanceledError") {
-        console.log("Upload aborted");
+        toast.info("Upload cancelled");
       } else {
-        console.error("Upload error:", err);
+        console.error("Upload error:", );
+        toast.info(err);
       }
     } finally {
       setUploading(false);
@@ -165,7 +165,7 @@ export function EditLectureDialog({ lecture }: { lecture: CourseLecture }) {
           </div>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader onClick={() => console.log("Header")}>
+          <DialogHeader>
             <DialogTitle>Edit lecture</DialogTitle>
             <DialogDescription>
               Edit a lecture from your section here. Click save when you&apos;re

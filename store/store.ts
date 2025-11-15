@@ -17,7 +17,7 @@ import { checkUserHasCart } from "@/app/_services/cart";
 import { getEnrolledCourses } from "@/app/_services/enrollments";
 import { setInitialized } from "./appSlice";
 import { AuthState } from "@/app/_services/types";
-import { checkAuthFromNextJS } from "@/app/_services/auth";
+import { checkAuthFromNextJS, getUserById } from "@/app/_services/auth";
 import { checkUserHasWishlist } from "@/app/_services/wishlist";
 
 // Create the middleware instance and methods
@@ -26,17 +26,15 @@ const listenerMiddleware = createListenerMiddleware();
 // Create a specific action for initialization
 const initializeApp = createAction("app/initialize");
 
-
-
 listenerMiddleware.startListening({
   actionCreator: initializeApp,
   effect: async (action, listenerApi) => {
     try {
-      console.log("Initializing app - checking auth state...");
-
       // Check authentication via Next.js API route
       const authResult: AuthState = await checkAuthFromNextJS();
+
       if (authResult.authenticated && authResult.user.id) {
+        const user = await getUserById(authResult.user.id);
         const userCart = await checkUserHasCart(
           authResult.user.id,
           authResult.user.role
@@ -45,16 +43,17 @@ listenerMiddleware.startListening({
           authResult.user.id,
           authResult.user.role
         );
-        console.log(userWishlist)
+
         const enrollments = await getEnrolledCourses(authResult.user.id);
 
         // Update store with user data
         listenerApi.dispatch(
           loginUser({
-            id: authResult.user.id,
-            email: authResult.user.email,
-            name: authResult.user.name,
-            role: authResult.user.role,
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            personalPictureUrl: user.personalPictureUrl,
           })
         );
 
@@ -84,7 +83,7 @@ listenerMiddleware.startListening({
           );
         }
       } else {
-        console.log("User not authenticated");
+
         // Ensure user is logged out in store
         listenerApi.dispatch(logoutUser());
       }

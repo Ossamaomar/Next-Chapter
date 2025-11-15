@@ -69,7 +69,6 @@ export async function editSection(id: string, name: string) {
     console.error(error.message);
     return false;
   } else {
-    console.log(data);
     return data;
   }
 }

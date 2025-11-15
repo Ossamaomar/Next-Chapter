@@ -10,6 +10,7 @@ const initialState: AuthState = {
     email: "",
     name: "",
     role: "",
+    personalPictureUrl: ""
   },
   // isLoading: false,
 };
@@ -23,9 +24,9 @@ const authSlice = createSlice({
       state.user = action.payload;
       // state.isLoading = false;
     },
-    // setLoading(state, action) {
-    //   // state.isLoading = action.payload;
-    // },
+    updateUserPicture(state, action) {
+      state.user.personalPictureUrl = action.payload.personalPictureUrl;
+    },
     logoutUser(state) {
       state.authenticated = false;
       state.user = {
@@ -33,6 +34,7 @@ const authSlice = createSlice({
         email: "",
         name: "",
         role: "",
+        personalPictureUrl: ""
       };
       // state.isLoading = false;
     },
@@ -42,7 +44,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginUser, logoutUser } = authSlice.actions;
+export const { loginUser, logoutUser, updateUserPicture } = authSlice.actions;
 export const getUserData = (state: {auth: AuthState}) => state.auth.user;
 
 export default authSlice.reducer

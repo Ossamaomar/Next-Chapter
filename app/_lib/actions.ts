@@ -4,13 +4,12 @@ import { cookies, headers } from "next/headers";
 import { getUserByEmail, login, logout } from "../_services/auth";
 import { CartItem, userSignin } from "../_services/types";
 import { stripe } from "./stripe";
+import { signIn, signOut } from "./auth";
 
 export async function loginAction({ email, password }: userSignin) {
   await login({ email, password });
-  // console.log(res1);
 
   await getUserByEmail(email);
-  // console.log(res2);
 }
 
 export async function setAuthCookie(token: string) {
@@ -33,6 +32,14 @@ export async function setRoleCookie(role: string) {
   });
 }
 
+export async function signInAction() {
+  await signIn("google", { redirectTo: "/" });
+}
+
+export async function signOutAction() {
+  await signOut({ redirectTo: "/" });
+}
+
 export async function logoutAction() {
   await logout();
 }
@@ -44,7 +51,6 @@ export async function getAuthCookie() {
 
 export async function getRoleCookie() {
   const cookieStore = await cookies();
-  console.log(cookieStore.get("roleAccess"));
   return cookieStore.get("roleAccess");
 }
 

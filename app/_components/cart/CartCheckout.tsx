@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { fetchClientSecret } from "@/app/_lib/actions";
 import { getCartItems } from "@/store/cartSlice";
@@ -6,21 +6,19 @@ import { loadStripe } from "@stripe/stripe-js";
 // import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
-
-
-const stripePromise = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+const stripePromise = await loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+);
 
 export default function CartCheckout() {
   const cartItems = useSelector(getCartItems);
 
   async function makePayment() {
-    const session = await fetchClientSecret(cartItems) 
+    const session = await fetchClientSecret(cartItems);
 
-    const result = await stripePromise.redirectToCheckout({
-      sessionId: session.session_id
-    })
-
-    console.log(result)
+    await stripePromise.redirectToCheckout({
+      sessionId: session.session_id,
+    });
   }
 
   if (cartItems.length === 0) return;

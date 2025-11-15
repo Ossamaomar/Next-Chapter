@@ -50,7 +50,6 @@ const enrollmentsSlice = createSlice({
       state,
       action: PayloadAction<{ value: boolean; lectureId: string }>
     ) {
-      console.log(action.payload);
       state.lecturesProgress = state.lecturesProgress.map((l) =>
         l.lectureId === action.payload.lectureId
           ? { ...l, isCompleted: action.payload.value }

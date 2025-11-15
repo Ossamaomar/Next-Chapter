@@ -8,6 +8,26 @@ export type userSignup = {
   role: string;
 };
 
+export type StudentProfile = {
+  id: string;
+  email: string;
+  name: string;
+  role: "Student";
+  gender: "Male" | "Female";
+};
+
+export type InstructorProfile = {
+  id: string;
+  email: string;
+  name: string;
+  role: "Instructor";
+  gender: "Male" | "Female";
+  title: string;
+  description: string;
+  personalPictureUrl: string;
+  links: string[];
+};
+
 export type InstructorInfo = {
   id: string;
   name: string;
@@ -24,12 +44,7 @@ export type userSignin = {
 
 export type AuthState = {
   authenticated: boolean;
-  user: {
-    id: string;
-    email: string;
-    name: string;
-    role: "Student" | "Instructor" | "";
-  } | null;
+  user: User;
 
   // isLoading: boolean;
 };
@@ -39,9 +54,21 @@ export type User = {
   email: string;
   name: string;
   role: "Student" | "Instructor" | "";
+  personalPictureUrl: string;
 
   // isLoading: boolean;
 };
+
+export type Account = {
+  id: string;
+  email: string;
+  name: string;
+  role: "Student" | "Instructor" | "";
+  personalPictureUrl: string;
+  title: string;
+  description: string;
+  links: string[];
+}
 
 export type LoginSession = {
   user: UserSB;
@@ -239,4 +266,4 @@ export type WishlistState = {
 export type Category = {
   id: string;
   name: string;
-}
+};

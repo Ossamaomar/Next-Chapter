@@ -70,7 +70,6 @@ export default function Lecture({
   }
 
   function onClickLecture() {
-    console.log(pathname.includes("/learn/"));
     if (isEnrolled) {
       if (!pathname.includes("/learn/")) {
         router.push(

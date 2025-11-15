@@ -165,7 +165,7 @@ export function AddLectureDialog({ sectionId }: { sectionId: string }) {
           <Button className="w-full">Add lecture</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader onClick={() => console.log("Header")}>
+          <DialogHeader>
             <DialogTitle>Add lecture</DialogTitle>
             <DialogDescription>
               Add a lecture to your section here. Click add when you&apos;re

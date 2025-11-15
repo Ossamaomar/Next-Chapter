@@ -20,7 +20,6 @@ export async function GET() {
 
   const { data, error } = await supabase.auth.getUser();
 
-  console.log(data)
 
   if (error || !data.user) {
     return NextResponse.json({ authenticated: false, user: null });

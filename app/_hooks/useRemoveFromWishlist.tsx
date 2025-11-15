@@ -25,7 +25,6 @@ export default function useRemoveFromWishlist() {
     dispatch(deleteWishlistItemThunk(wishlistItem.id));
 
     if (wishlistItems.length === 1) {
-      console.log("Here delete")
       await deleteWishlist(wishlistId, wishlistItems);
       dispatch(deleteWishlistSlice())
     }

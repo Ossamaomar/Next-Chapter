@@ -8,7 +8,6 @@ export async function GET() {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
-    // const role = cookieStore.get('role')?.value;
     const userId = cookieStore.get('userId')?.value;
 
     // If no token, return not authenticated
@@ -24,7 +23,6 @@ export async function GET() {
     // Fallback: Get user data from database if cookies are incomplete
     const userData = await getUserById(userId);
 
-    console.log("user data here", userData)
     
     return NextResponse.json({
       authenticated: true,

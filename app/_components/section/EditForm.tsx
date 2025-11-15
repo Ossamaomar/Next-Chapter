@@ -48,9 +48,7 @@ export default function EditForm({
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    // console.log({ ...data, order_index: sections.length });
     const res = await editSection(sectionId, data.name);
-    console.log(res)
     if (res) {
       dispatch(modifySection({ id: sectionId, name: res.name }));
     }
@@ -69,7 +67,6 @@ export default function EditForm({
       form.reset();
       //   setIsAdding(false);
     }
-    console.log(isLoading);
   }, [isLoading, form]);
 
   return (

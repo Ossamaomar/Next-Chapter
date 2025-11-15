@@ -34,7 +34,6 @@ export default function Searchbar({
     try {
       const data = await searchCourse(query);
       setCourses(data);
-      console.log(data);
     } catch {
       toast.error("Error occured while searching");
     }

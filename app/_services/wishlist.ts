@@ -43,7 +43,7 @@ export async function checkUserHasWishlist(id: string, role: string) {
     return res;
   }
 
-  console.log(wishlistItemsData);
+
   for (let i = 0; i < wishlistItemsData.length; i++) {
     const course = await getCourseById(wishlistItemsData[i].courseId);
     res.wishlistItems.push({ ...wishlistItemsData[i], course });

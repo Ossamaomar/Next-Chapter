@@ -14,17 +14,14 @@ export function useAddToCart() {
   const dispatch = useDispatch();
 
   async function handleAddToCart(courseId: string) {
-    console.log(userHasCart);
     if (userHasCart) {
       const cartItem = await addCourseToCart(courseId, studentId, cartId);
       dispatch(addCourseToCartSlice(cartItem));
-      console.log("User has cart");
     } else {
       const cart = await createCart(studentId);
       dispatch(createCartSlice(cart));
       const cartItem = await addCourseToCart(courseId, studentId, cart.id);
       dispatch(addCourseToCartSlice(cartItem));
-      console.log("User doesn't has cart");
     }
   }
 

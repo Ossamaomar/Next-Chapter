@@ -12,6 +12,7 @@ import SubmitAuthForm from "@/app/_components/auth/register/SubmitAuthForm";
 import { useRouter } from "next/navigation";
 import InputField from "../../forms/InputField";
 import SelectInputField from "../../forms/SelectInputField";
+import GoogleSignInButton from "./GoogleSignInButton";
 
 const FormSchema = z
   .object({
@@ -76,70 +77,73 @@ export default function RegisterContainer() {
 
   return (
     <div className="flex-1 py-10 flex items-center justify-center bg-gradient-to-r from-amber-100 to-emerald-100">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-[600px] rounded-lg space-y-6 py-20 border px-8 border-gray-400 bg-white"
-        >
-          <InputField
-            control={form.control}
-            name="firstName"
-            label="First Name"
-            placeholder="first name"
-            type="text"
-          />
+      <div className="w-[400px] flex flex-col justify-center items-center rounded-lg space-y-6 py-10 border px-8 border-gray-400 bg-white">
+        <GoogleSignInButton />
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full space-y-4"
+          >
+            <InputField
+              control={form.control}
+              name="firstName"
+              label="First Name"
+              placeholder="first name"
+              type="text"
+            />
 
-          <InputField
-            control={form.control}
-            name="lastName"
-            label="Last Name"
-            placeholder="last name"
-            type="text"
-          />
+            <InputField
+              control={form.control}
+              name="lastName"
+              label="Last Name"
+              placeholder="last name"
+              type="text"
+            />
 
-          <InputField
-            control={form.control}
-            name="email"
-            label="Email"
-            placeholder="name@example.com"
-            type="email"
-          />
+            <InputField
+              control={form.control}
+              name="email"
+              label="Email"
+              placeholder="name@example.com"
+              type="email"
+            />
 
-          <InputField
-            control={form.control}
-            name="password"
-            label="Password"
-            placeholder="password"
-            type="password"
-          />
+            <InputField
+              control={form.control}
+              name="password"
+              label="Password"
+              placeholder="password"
+              type="password"
+            />
 
-          <InputField
-            control={form.control}
-            name="rePassword"
-            label="Re-Password"
-            placeholder="re-password"
-            type="password"
-          />
+            <InputField
+              control={form.control}
+              name="rePassword"
+              label="Re-Password"
+              placeholder="re-password"
+              type="password"
+            />
 
-          <SelectInputField
-            control={form.control}
-            name="gender"
-            label="Select your gender"
-            placeholder="select your gender"
-            values={["Male", "Female"]}
-          />
+            <SelectInputField
+              control={form.control}
+              name="gender"
+              label="Select your gender"
+              placeholder="select your gender"
+              values={["Male", "Female"]}
+            />
 
-          <SelectInputField
-            control={form.control}
-            name="role"
-            label="Select your role"
-            placeholder="select your role"
-            values={["Student", "Instructor"]}
-          />
+            <SelectInputField
+              control={form.control}
+              name="role"
+              label="Select your role"
+              placeholder="select your role"
+              values={["Student", "Instructor"]}
+            />
 
-          <SubmitAuthForm isLoading={isLoading} type="register" />
-        </form>
-      </Form>
+            <SubmitAuthForm isLoading={isLoading} type="register" />
+          </form>
+        </Form>
+      </div>
     </div>
   );
 }

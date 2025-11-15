@@ -15,12 +15,16 @@ export default function InputField({
   type,
   placeholder,
   control,
+  defaultValue,
+  disabled = false,
 }: {
   name: string;
   label?: string;
   type: string;
   placeholder: string;
   control: Control;
+  defaultValue?: string;
+  disabled?: boolean;
 }) {
   return (
     <FormField
@@ -30,7 +34,21 @@ export default function InputField({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Input placeholder={placeholder} type={type} {...field} />
+            {disabled ? (
+              <Input
+                placeholder={placeholder}
+                type={type}
+                disabled={disabled}
+                value={defaultValue}
+                {...field}
+              />
+            ) : (
+              <Input
+                placeholder={placeholder}
+                type={type}
+                {...field}
+              />
+            )}
           </FormControl>
           <FormMessage />
         </FormItem>

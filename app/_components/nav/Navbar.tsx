@@ -223,6 +223,16 @@ export default function Navbar() {
             Add Course
           </Link>
         )}
+        
+        {(user.role === "Instructor" || user.role === "Student") && (
+          <Link
+            href="/account"
+            onClick={() => setOpen(false)}
+            className="hover:text-emerald-600"
+          >
+            Add Course
+          </Link>
+        )}
 
         {/* Mobile Icons */}
         <div className="flex gap-6 mt-6">

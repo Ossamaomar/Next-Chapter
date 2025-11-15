@@ -48,7 +48,6 @@ export default function AddSection() {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    // console.log({ ...data, order_index: sections.length });
     setIsAdding(true);
     dispatch(
       addSectionThunk({
@@ -73,7 +72,6 @@ export default function AddSection() {
       form.reset();
       setIsAdding(false);
     }
-    console.log(isLoading);
   }, [isLoading, form]);
 
   return (

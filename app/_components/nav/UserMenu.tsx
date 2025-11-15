@@ -14,6 +14,7 @@ import { getUserData, logoutUser } from "@/store/authSlice";
 import { clearCartSlice } from "@/store/cartSlice";
 import { clearEnrollmentSlice } from "@/store/enrollmentsSlice";
 import { clearWishlistSlice } from "@/store/wishlistSlice";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BiUser } from "react-icons/bi";
@@ -22,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function UserMenu() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { name, role, email } = useSelector(getUserData);
+  const { name, role, email, personalPictureUrl } = useSelector(getUserData);
 
   async function handleLogout() {
     await logout();
@@ -50,7 +51,18 @@ export default function UserMenu() {
       <DropdownMenuContent className="w-[18rem]" align="start">
         <DropdownMenuLabel>
           <div className="flex items-center gap-2">
-            <div className="w-12 h-12 rounded-full bg-slate-900 text-white flex justify-center items-center text-xl font-semibold">{name.split(" ")[0][0]}{name.split(" ")[1][0]}</div>
+            <div className="relative w-12 aspect-square rounded-full bg-slate-900 text-white flex justify-center items-center text-xl font-semibold">
+              {personalPictureUrl ? (
+                <Image
+                  src={personalPictureUrl}
+                  alt={`${name} picture`}
+                  fill
+                  className="rounded-full"
+                />
+              ) : (
+                `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`
+              )}
+            </div>
             <div>
               <p className="text-emerald-600">{name}</p>
               <p className="text-gray-500 text-xs ">{email}</p>
@@ -81,6 +93,11 @@ export default function UserMenu() {
           {role === "Instructor" && (
             <DropdownMenuItem>
               <Link href={"/addCourse"}>Add Course</Link>
+            </DropdownMenuItem>
+          )}
+          {(role === "Instructor" || role === "Student") && (
+            <DropdownMenuItem>
+              <Link href={"/account"}>Account</Link>
             </DropdownMenuItem>
           )}
           {/* <DropdownMenuItem>Settings</DropdownMenuItem> */}

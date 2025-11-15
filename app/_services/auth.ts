@@ -1,7 +1,15 @@
 import { supabase } from "@/app/_lib/supabase";
-import { InstructorInfo, userSignin, userSignup } from "./types";
+import {
+  Account,
+  InstructorInfo,
+  InstructorProfile,
+  StudentProfile,
+  User,
+  userSignin,
+  userSignup,
+} from "./types";
 import { toast } from "sonner";
-
+import { Session } from "@supabase/supabase-js";
 
 export async function signUp(params: userSignup) {
   const { email, name, password, role, gender } = params;
@@ -38,6 +46,25 @@ export async function signUp(params: userSignup) {
   return authData;
 }
 
+export async function signInWithGoogle() {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: "http://localhost:3000/auth/callback",
+      queryParams: {
+        access_type: "offline",
+        prompt: "consent",
+      },
+    },
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
 export async function login(params: userSignin) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email: params.email,
@@ -45,15 +72,22 @@ export async function login(params: userSignin) {
   });
 
   if (error) {
-    console.log(error);
     throw new Error("An error occured during sign in");
   }
 
   return data;
 }
 
+export async function getUserSession() {
+  const { data, error } = await supabase.auth.getSession();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+}
+
 export async function logout() {
-  console.log("I am here logout");
   try {
     await supabase.auth.signOut();
     await fetch("/api/auth/clear-cookies", {
@@ -64,6 +98,58 @@ export async function logout() {
     console.error(error);
     throw new Error("An error occured during logout");
   }
+}
+
+export async function createStudentUser(user: StudentProfile) {
+  const { data, error } = await supabase
+    .from("users")
+    .insert({
+      id: user?.id,
+      email: user?.email,
+      name: user.name,
+      role: user.role,
+      gender: user.gender,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    // if (dbError.code) {
+    //   toast.error("This account already exists");
+    // }
+    throw new Error("An error occured during signup");
+  }
+
+  return data;
+}
+
+export async function createInstructorUser(user: InstructorProfile) {
+  const { data, error } = await supabase
+    .from("users")
+    .insert({
+      id: user?.id,
+      email: user?.email,
+      name: user.name,
+      role: user.role,
+      gender: user.gender,
+    })
+    .select()
+    .single();
+
+  await createInstructorInfo({
+    id: user.id,
+    name: user.name,
+    title: user.title,
+    description: user.description,
+    personalPictureUrl: user.personalPictureUrl,
+    links: user.links,
+  });
+
+  if (error) {
+    throw new Error("An error occured during signup");
+  }
+
+  return data;
 }
 
 export async function deleteUserByEmail(email: string) {
@@ -85,8 +171,38 @@ export async function getUserByEmail(email: string) {
     .maybeSingle(); // gets one row only
 
   if (error) {
-    console.log("Error fetching user:", error.message);
     return null;
+  }
+
+  return data;
+}
+
+export async function updateUserInfo(account: Account) {
+  const { data, error } = await supabase
+    .from("users")
+    .update({
+      personalPictureUrl: account.personalPictureUrl,
+    })
+    .eq("id", account.id).select().single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (account.role === "Instructor") {
+    const { error } = await supabase
+      .from("instructors")
+      .update({
+        personalPictureUrl: account.personalPictureUrl,
+        title: account.title,
+        description: account.description,
+        links: account.links,
+      })
+      .eq("id", account.id);
+
+    if (error) {
+      throw new Error(error.message);
+    }
   }
 
   return data;
@@ -99,8 +215,7 @@ export async function getUserById(id: string) {
     .eq("id", id)
     .maybeSingle(); // gets one row only
   if (error) {
-    console.log("Error fetching user:", error.message);
-    return null;  
+    return null;
   }
 
   return data;
@@ -135,7 +250,6 @@ export async function checkAuthFromNextJS() {
     }
 
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Auth check error:", error);
@@ -155,7 +269,6 @@ export async function checkAuthFromServerNextJS() {
     }
 
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Auth check error:", error);
@@ -167,7 +280,8 @@ export async function getInstructorInfo(id: string) {
   const { data, error } = await supabase
     .from("instructors")
     .select()
-    .eq("id", id).maybeSingle();
+    .eq("id", id)
+    .maybeSingle();
 
   if (error) {
     throw new Error(error.message);
@@ -177,7 +291,7 @@ export async function getInstructorInfo(id: string) {
 }
 
 export async function createInstructorInfo(info: InstructorInfo) {
-  const { data, error } = await supabase.from("instructors").insert({
+  const {  error } = await supabase.from("instructors").insert({
     id: info.id,
     name: info.name,
     title: info.title,
@@ -186,32 +300,56 @@ export async function createInstructorInfo(info: InstructorInfo) {
     links: info.links,
   });
 
-  if (error) {
+  const {data, error: usersError} = await supabase.from("users").update({
+    personalPictureUrl: info.personalPictureUrl
+  }).eq("id", info.id).select().single();
+
+  if (error && usersError) {
     throw new Error(error.message);
   }
   return data;
 }
 
-export async function getUserSession() {
-  const { data: authData, error: authError } = await supabase.auth.getSession();
+export async function setAuthCookies(session: Session, user: User) {
+  const cookieResponse = await fetch("/api/auth/set-cookies", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: session.access_token,
+      role: user.role,
+      userId: user.id,
+    }),
+    credentials: "include", // Important for cookies
+  });
 
-  if (authError) {
-    throw new Error(authError.message);
+  if (!cookieResponse.ok) {
+    toast.error("Failed to set authentication cookies");
+    throw new Error("Failed to set authentication cookies");
   }
-  console.log(authData)
-
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", authData?.session?.user?.id)
-    .maybeSingle();
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
 }
+
+// export async function getUserSession() {
+//   const { data: authData, error: authError } = await supabase.auth.getSession();
+
+//   if (authError) {
+//     throw new Error(authError.message);
+//   }
+//   console.log(authData);
+
+//   const { data, error } = await supabase
+//     .from("users")
+//     .select("*")
+//     .eq("id", authData?.session?.user?.id)
+//     .maybeSingle();
+
+//   if (error) {
+//     throw new Error(error.message);
+//   }
+
+//   return data;
+// }
 // export async function fetchAuthUserByEmail(email: string) {
 //   const { data, error } = await supabaseAdmin.auth.admin.getUserByEmail(email);
 

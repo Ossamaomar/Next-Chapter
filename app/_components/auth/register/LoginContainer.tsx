@@ -5,12 +5,17 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
-import { getInstructorInfo, getUserByEmail, login } from "@/app/_services/auth";
+import {
+  getInstructorInfo,
+  getUserByEmail,
+  login,
+  setAuthCookies,
+} from "@/app/_services/auth";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/store/authSlice";
 import { useRouter } from "next/navigation";
-import { LoginSession, User, userSignin } from "@/app/_services/types";
+import { User, userSignin } from "@/app/_services/types";
 import { checkUserHasCart } from "@/app/_services/cart";
 import { createCartSlice } from "@/store/cartSlice";
 import { getEnrolledCourses } from "@/app/_services/enrollments";
@@ -19,7 +24,7 @@ import SubmitAuthForm from "@/app/_components/auth/register/SubmitAuthForm";
 import InputField from "../../forms/InputField";
 import { checkUserHasWishlist } from "@/app/_services/wishlist";
 import { createWishlistSlice } from "@/store/wishlistSlice";
-
+import GoogleSignInButton from "./GoogleSignInButton";
 
 const FormSchema = z.object({
   email: z.string().email("Email must be like name@example.com"),
@@ -41,20 +46,20 @@ export default function LoginContainer() {
   const router = useRouter();
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-
     setIsLoading(true);
     try {
       const res = await login(data as userSignin);
       const user: User = await getUserByEmail(res?.user?.email);
       const userCart = await checkUserHasCart(user.id, user.role);
       const userWishlist = await checkUserHasWishlist(user.id, user.role);
-      await setAuthCookies(res, user);
+      await setAuthCookies(res.session, user);
       dispatch(
         loginUser({
           id: user.id,
           email: user.email,
           name: user.name,
           role: user.role,
+          personalPictureUrl: user.personalPictureUrl
         })
       );
 
@@ -108,65 +113,34 @@ export default function LoginContainer() {
     }
   }
 
-  async function setAuthCookies(loginSession: LoginSession, user: User) {
-    const cookieResponse = await fetch("/api/auth/set-cookies", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: loginSession.session.access_token,
-        role: user.role,
-        userId: user.id,
-      }),
-      credentials: "include", // Important for cookies
-    });
-
-    if (!cookieResponse.ok) {
-      toast.error("Failed to set authentication cookies");
-      throw new Error("Failed to set authentication cookies");
-    }
-  }
-
-//   async function fetchUserData(email: string) {
-//     const res = await getUserByEmail(email);
-//     dispatch(
-//       loginUser({
-//         id: res.id,
-//         email: res.email,
-//         name: res.name,
-//         role: res.role,
-//       })
-//     );
-
-//     return res;
-//   }
-
   return (
     <div className="flex-1 py-10 flex items-center justify-center bg-gradient-to-r from-amber-100 to-emerald-100">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-[600px] rounded-lg space-y-6 py-20 border px-8 border-gray-400 bg-white"
-        >
-          <InputField
-            control={form.control}
-            name="email"
-            label="Email"
-            placeholder="name@example.com"
-            type="email"
-          />
+      <div className="w-[400px] flex flex-col justify-center items-center rounded-lg space-y-6 py-10 border px-8 border-gray-400 bg-white">
+        <GoogleSignInButton />
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full space-y-4"
+          >
+            <InputField
+              control={form.control}
+              name="email"
+              label="Email"
+              placeholder="name@example.com"
+              type="email"
+            />
 
-          <InputField
-            control={form.control}
-            name="password"
-            label="Password"
-            placeholder="password"
-            type="password"
-          />
-          <SubmitAuthForm isLoading={isLoading} type="login" />
-        </form>
-      </Form>
+            <InputField
+              control={form.control}
+              name="password"
+              label="Password"
+              placeholder="password"
+              type="password"
+            />
+            <SubmitAuthForm isLoading={isLoading} type="login" />
+          </form>
+        </Form>
+      </div>
     </div>
   );
 }

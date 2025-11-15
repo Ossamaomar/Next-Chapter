@@ -8,8 +8,8 @@ import { toast } from "sonner";
 import { InstructorInfo } from "@/app/_services/types";
 import { createInstructorInfo } from "@/app/_services/auth";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { getUserData } from "@/store/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserData, updateUserPicture } from "@/store/authSlice";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { MoonLoader } from "react-spinners";
@@ -66,6 +66,7 @@ export default function CompleteProfile() {
     name: "links",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   // Handle file selection
   const handleFileSelect = (file: File) => {
@@ -108,7 +109,10 @@ export default function CompleteProfile() {
 
     setIsLoading(true);
     try {
-      await createInstructorInfo(info);
+      const data = await createInstructorInfo(info);
+      dispatch(updateUserPicture({
+        personalPictureUrl: data.personalPictureUrl 
+      }))
       toast.success("Your profile is now updated");
       router.push("/");
     } catch (error) {
@@ -185,7 +189,7 @@ export default function CompleteProfile() {
               control={form.control}
               name="title"
               label="Title"
-              placeholder="title"
+              placeholder="eg. Software Developer"
               type="text"
             />
 

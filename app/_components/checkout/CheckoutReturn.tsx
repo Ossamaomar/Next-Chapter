@@ -76,8 +76,6 @@ export default function CheckoutReturn({
         router.push("/");
       }
     }
-
-    console.log(cartId);
     handleCompletion();
   }, [router, status, courses, id, cartId, dispatch, appState]);
 

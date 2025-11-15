@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${sourceCodePro.className} antialiased `}>
+      <body className={`${sourceCodePro.className} antialiased`}>
         <ClientProviders>
           <div className="flex flex-col min-h-screen">
             <Navbar />
