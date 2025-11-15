@@ -47,6 +47,7 @@ export default function Navbar() {
     dispatch(clearWishlistSlice());
     dispatch(clearCartSlice());
     dispatch(clearEnrollmentSlice());
+    setOpen(false);
     router.push("/");
     router.refresh();
   }
